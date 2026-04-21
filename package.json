@@ -22,7 +22,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "prepublishOnly": "npm run build"
   },
   "keywords": ["solana", "blockchain", "sdk", "rpc", "web3", "chainkit"],
   "author": "thejamesnick",
