@@ -1,0 +1,55 @@
+CHAINKIT — 10/10 ROADMAP
+========================
+
+Current assessment
+- Strong vision, positioning, and docs.
+- Codebase is very early: src currently only contains types, while README/docs promise a full SDK surface.
+- Build compiles, but there are no tests yet (and no implementation coverage).
+
+P0 — Make the product real (must-have)
+- [ ] Implement core public API in src/index.ts (ChainKit class + exported modules).
+- [ ] Implement Solana RPC client and modules:
+      - accounts (getBalances, getAccount)
+      - transactions (getTransactions, getTransaction)
+      - tokens (getToken, getTokenAccounts)
+- [ ] Implement robust input validation and consistent error mapping.
+- [ ] Ensure package exports map to real compiled files (., ./solana, ./wallet).
+
+P1 — Trust and quality
+- [ ] Add unit tests for all public methods (success + failure paths).
+- [ ] Add integration tests against Solana devnet for key workflows.
+- [ ] Add CI for build + test on PRs.
+- [ ] Add API contract tests to lock normalized return shapes.
+
+P2 — Security and safety
+- [ ] Harden wallet/key handling: avoid accidental secret leakage in logs/errors.
+- [ ] Add encryption/decryption tests for keyfile lifecycle.
+- [ ] Add security checks in CI (dependency audit, CodeQL or equivalent).
+- [ ] Add rate-limit/backoff/retry strategy for provider calls.
+
+P3 — DX and docs alignment
+- [ ] Align README/WALLET/PROVIDERS docs with what is actually shipped.
+- [ ] Add “status matrix” (implemented vs planned) for each method.
+- [ ] Add copy-paste runnable examples in /examples with expected outputs.
+- [ ] Add migration/quickstart docs for web3.js users.
+
+P4 — Packaging and release readiness
+- [ ] Add semantic versioning + changelog process.
+- [ ] Add npm publish pipeline and release checklist.
+- [ ] Verify ESM/CJS compatibility strategy and document supported runtimes.
+- [ ] Add benchmark snapshots for critical calls.
+
+P5 — Feature completeness (toward the vision)
+- [ ] Provider abstraction (Helius/Triton/custom) with pluggable interface.
+- [ ] Browser-safe/client entrypoint.
+- [ ] Wallet module implementation (create/restore/export/import/sign).
+- [ ] Price/swap module stabilization (Jupiter integration + tests).
+- [ ] NFT methods and asset metadata support.
+- [ ] Begin EVM support behind explicit experimental flag.
+
+Definition of 10/10
+- [ ] Public API fully implemented and tested.
+- [ ] Docs match reality exactly.
+- [ ] CI is green and blocks regressions.
+- [ ] Security hygiene is in place.
+- [ ] Install-to-first-success in <5 minutes for a new developer.
