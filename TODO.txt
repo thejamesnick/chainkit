@@ -1,0 +1,28 @@
+CHAINKIT — TODO
+===============
+
+PHASE 1
+-------
+[ ] src/types.ts — ChainKitConfig, BalanceResult, TxResult, TokenResult types
+[ ] src/core/errors.ts — ChainKitError class
+[ ] src/core/normalize.ts — response normalizers
+[ ] src/chains/solana/client.ts — Solana RPC connection wrapper
+[ ] src/chains/solana/accounts.ts — getBalances(), getAccount()
+[ ] src/chains/solana/transactions.ts — getTransactions(), getTransaction()
+[ ] src/chains/solana/tokens.ts — getToken(), getTokenAccounts()
+[ ] src/chains/solana/index.ts — Solana chain entry
+[ ] src/index.ts — ChainKit class
+[ ] Tests for each module
+[ ] npm publish
+
+PHASE 2
+-------
+[ ] Provider abstraction (Helius, Triton, custom RPC)
+[ ] Browser-safe entry point
+[ ] WebSocket subscriptions
+[ ] NFT methods
+
+PHASE 3
+-------
+[ ] EVM / Ethereum support
+[ ] React hooks package
