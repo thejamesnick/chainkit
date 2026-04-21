@@ -43,6 +43,9 @@ const kit = new ChainKit({
   rpcUrl: process.env.SOLANA_RPC_URL,
 })
 
+// Or use the network shorthand (auto-resolves to public cluster URL):
+const devKit = new ChainKit({ chain: 'solana', network: 'devnet' })
+
 // Get token balances
 const balances = await kit.getBalances('YourWalletAddressHere')
 
@@ -66,8 +69,11 @@ const kit = new ChainKit(config: ChainKitConfig)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `chain` | `'solana'` | ✅ | Chain to connect to |
-| `rpcUrl` | `string` | ✅ | Your RPC endpoint |
+| `rpcUrl` | `string` | ✅ (or `network`) | Your RPC endpoint |
+| `network` | `'mainnet-beta' \| 'devnet' \| 'testnet'` | ✅ (or `rpcUrl`) | Auto-resolves to public cluster URL |
 | `apiKey` | `string` | — | API key for enhanced providers (Helius, etc.) |
+
+> **Tip:** `rpcUrl` and `network` can both be provided — `rpcUrl` wins. If only `network` is given, ChainKit resolves the public cluster URL for you.
 
 ---
 
@@ -100,6 +106,101 @@ await kit.getToken(mint: string)
 // All tokens held by a wallet
 await kit.getTokenAccounts(address: string)
 ```
+
+### Wallet
+
+```ts
+// Create a new wallet (keypair + 12-word mnemonic)
+const wallet = kit.createWallet()
+
+// Restore from mnemonic
+const wallet = kit.restoreWallet('word1 word2 ... word12')
+
+// Full wallet module
+kit.wallet.create()
+kit.wallet.restore(mnemonic)
+kit.wallet.fromBase58(privateKey)
+kit.wallet.exportKeyfile(wallet, password)
+kit.wallet.importKeyfile(path, password)
+kit.wallet.exportQR(publicKey)
+kit.wallet.isValid(address)
+kit.wallet.isMnemonic(phrase)
+```
+
+### Transfers
+
+```ts
+// Send SOL
+await kit.transfer({ from: wallet, to: address, amount: 0.5 })
+
+// Send SPL token
+await kit.transferToken({ from: wallet, to: address, mint, amount: 100 })
+```
+
+### Devnet / Testnet
+
+```ts
+// network shorthand — no rpcUrl needed
+const kit = new ChainKit({ chain: 'solana', network: 'devnet' })
+
+// Airdrop SOL (devnet / testnet only — throws on mainnet)
+await kit.airdrop(wallet.publicKey, 2) // 2 SOL
+```
+
+### Prices & Swaps (via Jupiter)
+
+```ts
+// Token price in USD
+await kit.getPrice(mint: string)
+
+// Best swap quote across all Solana DEXs
+await kit.getSwapQuote({ inputMint, outputMint, amount })
+
+// Execute swap
+await kit.swap(quote, wallet)
+```
+
+---
+
+## Status Matrix
+
+| Method | Phase 1 | Notes |
+|---|---|---|
+| `getBalances(address)` | ✅ | SOL + SPL tokens |
+| `getAccount(address)` | ✅ | |
+| `getTransactions(address, opts?)` | ✅ | Pagination supported |
+| `getTransaction(signature)` | ✅ | |
+| `getToken(mint)` | ✅ | Supply + on-chain metadata |
+| `getTokenAccounts(address)` | ✅ | |
+| `createWallet()` | ✅ | |
+| `restoreWallet(mnemonic)` | ✅ | |
+| `wallet.create()` | ✅ | |
+| `wallet.restore(mnemonic)` | ✅ | |
+| `wallet.fromSecretKey(bytes)` | ✅ | |
+| `wallet.fromBase58(str)` | ✅ | |
+| `wallet.isValid(address)` | ✅ | |
+| `wallet.isMnemonic(phrase)` | ✅ | |
+| `wallet.exportKeyfile(wallet, pass)` | ✅ | AES-256-GCM |
+| `wallet.importKeyfile(path, pass)` | ✅ | |
+| `wallet.exportBase58(wallet)` | ✅ | |
+| `wallet.exportArray(wallet)` | ✅ | |
+| `wallet.exportQR(pubkey)` | ✅ | Base64 PNG |
+| `wallet.saveQR(pubkey, path)` | ✅ | |
+| `wallet.sign(tx, wallet)` | ✅ | |
+| `wallet.derive(mnemonic, path)` | ✅ | BIP44 |
+| `wallet.vanity(prefix)` | ✅ | Brute-force, async |
+| `transfer(opts)` | ✅ | SOL transfer |
+| `transferToken(opts)` | ✅ | SPL token transfer |
+| `airdrop(address, amount)` | ✅ | devnet/testnet only |
+| `getPrice(mint)` | ✅ | Jupiter price API |
+| `getSwapQuote(opts)` | ✅ | Jupiter quote API |
+| `swap(quote, wallet)` | ✅ | Jupiter swap + sign |
+| NFT methods (`getNFT`, `getCollection`) | 🔜 Phase 2 | |
+| `watch()` — WebSocket subscriptions | 🔜 Phase 2 | |
+| Browser-safe entry point | 🔜 Phase 2 | |
+| Provider abstraction (Helius, Triton) | 🔜 Phase 2 | |
+| React hooks (`chainkit/react`) | 🔜 Phase 3 | |
+| EVM / Ethereum support | 🔜 Phase 3 | |
 
 ---
 
