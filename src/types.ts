@@ -1,9 +1,12 @@
 // ─── Config ───────────────────────────────────────────────────────────────────
 
+export type SolanaNetwork = 'mainnet-beta' | 'devnet' | 'testnet'
+
 export interface ChainKitConfig {
   chain: 'solana'
-  rpcUrl: string
-  apiKey?: string // optional — for Helius enhanced endpoints
+  rpcUrl?: string                // optional when network is provided
+  network?: SolanaNetwork        // auto-resolves to public cluster URL
+  apiKey?: string                // optional — for Helius enhanced endpoints
 }
 
 // ─── Wallet ───────────────────────────────────────────────────────────────────
@@ -113,6 +116,13 @@ export interface PriceResult {
   mint: string
   price: number   // in USD
   currency: 'USD'
+}
+
+// ─── Airdrop ─────────────────────────────────────────────────────────────────
+
+export interface AirdropResult {
+  signature: string
+  amount: number // in SOL
 }
 
 // ─── Transfer ─────────────────────────────────────────────────────────────────
